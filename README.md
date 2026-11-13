@@ -641,7 +641,10 @@ databases and local loopback networking. Keep test data isolated from the
 default user database. Unity companion compilation requires a separate Unity
 project with the relevant SDK/UdonSharp packages installed.
 
-The accompanying manuscript is the source reference for the suite's operating
-domains and example assumptions. Verify provider prices, platform
-requirements, SDK versions, and all financial decisions against current
-primary sources before relying on them.
+The [16-chapter integrated manuscript](metaverse-builders-ledger-complete-16-chapter-integrated-edition.md)
+is the source reference for the suite's operating domains and example
+assumptions. It is also available as
+[PDF](metaverse-builders-ledger-complete-16-chapter-integrated-edition.pdf) and
+[EPUB](metaverse-builders-ledger-complete-16-chapter-integrated-edition.epub).
+Verify provider prices, platform requirements, SDK versions, and all financial
+decisions against current primary sources before relying on them.

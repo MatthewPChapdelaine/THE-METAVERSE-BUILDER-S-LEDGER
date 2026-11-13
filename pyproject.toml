@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "metaverse-builders-ledger"
+version = "0.1.0"
+description = "Local-first operations suite for virtual-world projects"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+
+[project.scripts]
+ledger-suite = "ledger_suite.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["ledger_suite*"]
+
+[tool.setuptools.package-data]
+ledger_suite = ["web/*.html", "web/*.js", "web/*.css"]

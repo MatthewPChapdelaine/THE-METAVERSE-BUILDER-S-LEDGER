@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#10151c">
+    <title>Builder's Ledger</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Builder's Ledger home">
+        <span class="brand-mark" aria-hidden="true"><span>L</span></span>
+        <span><strong>BUILDER'S LEDGER</strong><small>WORLD OPERATIONS SUITE</small></span>
+      </a>
+      <div class="topbar-right">
+        <span class="local-badge"><span></span> LOCAL WORKSPACE</span>
+        <span id="today" class="today"></span>
+        <button id="refresh-data" class="button button-quiet" type="button" aria-label="Refresh dashboard data">
+          <span aria-hidden="true">↻</span> Refresh
+        </button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <p class="nav-caption">WORKSPACE</p>
+        <nav aria-label="Main navigation">
+          <a class="nav-link active" href="#overview" data-view="overview"><span aria-hidden="true">◫</span> Overview</a>
+          <a class="nav-link" href="#projects" data-view="projects"><span aria-hidden="true">◈</span> Projects &amp; costs</a>
+          <a class="nav-link" href="#production" data-view="production"><span aria-hidden="true">▤</span> Production</a>
+          <a class="nav-link" href="#team" data-view="team"><span aria-hidden="true">♧</span> Team &amp; revenue</a>
+          <a class="nav-link" href="#assets" data-view="assets"><span aria-hidden="true">◇</span> Assets &amp; releases</a>
+          <a class="nav-link" href="#world-tools" data-view="world-tools"><span aria-hidden="true">◎</span> World tools</a>
+        </nav>
+        <div class="sidebar-note">
+          <span class="eyebrow">LEDGER PRINCIPLE</span>
+          <p>Clear budgets. Credited work. Deliberate releases.</p>
+          <span class="version">VERSION 0.1 · LOCAL FIRST</span>
+        </div>
+      </aside>
+
+      <main id="main-content" tabindex="-1" aria-busy="true">
+        <div id="app-status" class="app-status" role="status" aria-live="polite" aria-busy="true">
+          <span id="app-status-message">Connecting to your local ledger…</span>
+          <button id="retry-load" class="button button-secondary" type="button" hidden>Try again</button>
+        </div>
+        <section class="view active" id="view-overview" aria-labelledby="overview-title">
+          <div class="page-heading">
+            <div><p class="eyebrow">CONTROL ROOM / OVERVIEW</p><h1 id="overview-title" tabindex="-1">Build with clarity.</h1>
+              <p class="subheading">Your projects, production health, and operating ledger at a glance.</p></div>
+            <a class="button button-primary" href="#projects" data-view="projects">＋ Add a project</a>
+          </div>
+          <div class="stat-grid" id="summary-cards"></div>
+          <div class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">FINANCIAL CONTROL</p><h2>Project run rates</h2></div>
+              <a href="#projects" data-view="projects" class="text-link">Manage costs →</a></div>
+            <div id="budget-list" class="budget-list"></div>
+          </div>
+          <div class="panel info-panel">
+            <div class="panel-heading"><div><p class="eyebrow">OPERATING MODEL</p><h2>Four pillars, one ledger</h2></div></div>
+            <div class="pillar-grid">
+              <div><span class="pillar-number">01</span><strong>Compute economics</strong><p>Track recurring spend, one-time costs, and break-even estimates.</p></div>
+              <div><span class="pillar-number">02</span><strong>Technical production</strong><p>Organize work tracks, releases, platform targets, and audio zones.</p></div>
+              <div><span class="pillar-number">03</span><strong>Human logistics</strong><p>Plan staff shifts, record revenue, and make allocations visible.</p></div>
+              <div><span class="pillar-number">04</span><strong>Creator governance</strong><p>Keep contributor credits and asset license notes with each project.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-projects" aria-labelledby="projects-title">
+          <div class="page-heading"><div><p class="eyebrow">SILICON LEDGER / OPERATING COSTS</p><h1 id="projects-title" tabindex="-1">Projects &amp; costs</h1>
+            <p class="subheading">Set monthly budgets and record the full cost of your toolchain.</p></div></div>
+          <div class="content-grid">
+            <form class="panel form-panel" data-resource="projects">
+              <div class="panel-heading"><div><p class="eyebrow">PORTFOLIO</p><h2>New project</h2></div></div>
+              <label>Project name<input name="name" required maxlength="500" placeholder="Orbspace Citadel"></label>
+              <label>Platform<input name="platform" value="VRChat"></label>
+              <label>Monthly budget <span class="unit">USD</span><input name="monthly_budget" type="number" min="0" step="0.01" value="180"></label>
+              <label>Status<select name="status"><option>active</option><option>planning</option><option>paused</option><option>archived</option></select></label>
+              <button class="button button-primary" type="submit">Create project</button>
+            </form>
+            <div class="panel table-panel"><div class="panel-heading"><div><p class="eyebrow">PORTFOLIO</p><h2>Active projects</h2></div></div>
+              <div id="projects-list" class="table-wrap"></div></div>
+          </div>
+          <div class="content-grid">
+            <form class="panel form-panel" data-resource="expenses">
+              <div class="panel-heading"><div><p class="eyebrow">COST CONTROL</p><h2>Record an expense</h2></div></div>
+              <label>Project<select name="project_id" data-projects required></select></label>
+              <label>Vendor / service<input name="vendor" required placeholder="Cloud workstation"></label>
+              <label>Category<input name="category" required placeholder="Compute"></label>
+              <label>Amount <span class="unit">USD</span><input name="amount" type="number" min="0" step="0.01" required></label>
+              <label>Billing cycle<select name="billing_cycle"><option>monthly</option><option>annual</option><option>one_time</option></select></label>
+              <label>Date<input name="date" type="date"></label>
+              <label class="wide">Notes<textarea name="notes" rows="2"></textarea></label>
+              <button class="button button-primary" type="submit">Add expense</button>
+            </form>
+            <div class="panel table-panel"><div class="panel-heading"><div><p class="eyebrow">COST CONTROL</p><h2>Expense ledger</h2></div></div>
+              <div id="expenses-list" class="table-wrap"></div></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-production" aria-labelledby="production-title">
+          <div class="page-heading"><div><p class="eyebrow">TECHNICAL ENGINE / DELIVERY</p><h1 id="production-title" tabindex="-1">Production board</h1>
+            <p class="subheading">Make deliverables, owners, and release gates visible.</p></div></div>
+          <div class="content-grid">
+            <form class="panel form-panel" data-resource="tasks">
+              <div class="panel-heading"><div><p class="eyebrow">MILESTONES</p><h2>Add a task</h2></div></div>
+              <label>Project<select name="project_id" data-projects required></select></label>
+              <label>Task<input name="title" required placeholder="Verify Quest texture budget"></label>
+              <label>Production track<select name="track">
+                <option>Spatial architecture</option><option>3D environment art</option><option>Shaders &amp; UI</option>
+                <option>UdonSharp systems</option><option>Lighting &amp; performance</option><option>Release &amp; group ops</option>
+              </select></label>
+              <label>Assignee<input name="assignee" placeholder="Contributor handle"></label>
+              <label>Status<select name="status"><option>todo</option><option>in_progress</option><option>blocked</option><option>done</option></select></label>
+              <label>Due date<input name="due_date" type="date"></label>
+              <label class="wide">Description<textarea name="description" rows="2"></textarea></label>
+              <button class="button button-primary" type="submit">Add to board</button>
+            </form>
+            <div class="panel table-panel"><div class="panel-heading"><div><p class="eyebrow">MILESTONES</p><h2>Work in progress</h2></div></div>
+              <div id="tasks-list" class="table-wrap"></div></div>
+          </div>
+          <div class="panel info-panel">
+            <div class="panel-heading"><div><p class="eyebrow">RELEASE CHECK</p><h2>PC &amp; Quest gate</h2></div></div>
+            <div class="check-grid">
+              <label><input type="checkbox" data-checklist="editor"> Confirm Unity editor and package lock versions</label>
+              <label><input type="checkbox" data-checklist="pc"> Validate PC target and platform shaders</label>
+              <label><input type="checkbox" data-checklist="quest"> Validate Android / Quest target and texture budgets</label>
+              <label><input type="checkbox" data-checklist="udon"> Review Udon behavior and null-safe scene references</label>
+              <label><input type="checkbox" data-checklist="device"> Test the build in a clean project / device profile</label>
+              <label><input type="checkbox" data-checklist="approval"> Record build version and publish approval</label>
+            </div>
+            <p class="muted note">Checklist progress is saved in this browser only. Use release records below to persist version and target status.</p>
+          </div>
+        </section>
+
+        <section class="view" id="view-team" aria-labelledby="team-title">
+          <div class="page-heading"><div><p class="eyebrow">HUMAN LEDGER / OPERATIONS</p><h1 id="team-title" tabindex="-1">Team &amp; revenue</h1>
+            <p class="subheading">Plan shifts and keep income, fees, and contributor allocations auditable.</p></div></div>
+          <div class="content-grid">
+            <form class="panel form-panel" data-resource="staff">
+              <div class="panel-heading"><div><p class="eyebrow">STAFF ROSTER</p><h2>Add a contributor</h2></div></div>
+              <label>Display name<input name="display_name" required></label>
+              <label>Role<input name="role" required placeholder="Barkeepers, moderator…"></label>
+              <label>Rate / hour <span class="unit">USD</span><input name="rate_per_hour" type="number" min="0" step="0.01" value="0"></label>
+              <label>Active<select name="active"><option value="true">Yes</option><option value="false">No</option></select></label>
+              <button class="button button-primary" type="submit">Add contributor</button>
+            </form>
+            <div class="panel table-panel"><div class="panel-heading"><div><p class="eyebrow">STAFF ROSTER</p><h2>Contributors</h2></div></div>
+              <div id="staff-list" class="table-wrap"></div></div>
+          </div>
+          <div class="content-grid">
+            <form class="panel form-panel" data-resource="shifts">
+              <div class="panel-heading"><div><p class="eyebrow">SHIFT LOG</p><h2>Record a shift</h2></div></div>
+              <label>Project<select name="project_id" data-projects required></select></label>
+              <label>Contributor<select name="staff_id" data-staff required></select></label>
+              <label>Date<input name="date" type="date" required></label>
+              <label>Hours<input name="hours" type="number" min="0.01" max="24" step="0.25" required></label>
+              <label>Tips <span class="unit">USD</span><input name="tips" type="number" min="0" step="0.01" value="0"></label>
+              <label>Status<select name="status"><option>planned</option><option>completed</option></select></label>
+              <button class="button button-primary" type="submit">Save shift</button>
+            </form>
+            <div class="panel table-panel"><div class="panel-heading"><div><p class="eyebrow">SHIFT LOG</p><h2>Scheduled &amp; completed</h2></div></div>
+              <div id="shifts-list" class="table-wrap"></div></div>
+          </div>
+          <div class="content-grid">
+            <form class="panel form-panel" data-resource="revenue">
+              <div class="panel-heading"><div><p class="eyebrow">REVENUE LEDGER</p><h2>Record income</h2></div></div>
+              <label>Project<select name="project_id" data-projects required></select></label>
+              <label>Source<input name="source" required placeholder="Membership, tips…"></label>
+              <label>Gross <span class="unit">USD</span><input name="gross" type="number" min="0" step="0.01" required></label>
+              <label>Fees <span class="unit">USD</span><input name="fees" type="number" min="0" step="0.01" value="0"></label>
+              <label>Date<input name="date" type="date" required></label>
+              <label class="wide">Notes<textarea name="notes" rows="2"></textarea></label>
+              <button class="button button-primary" type="submit">Add revenue</button>
+            </form>
+            <div class="panel table-panel"><div class="panel-heading"><div><p class="eyebrow">REVENUE LEDGER</p><h2>Recorded income</h2></div></div>
+              <div id="revenue-list" class="table-wrap"></div></div>
+          </div>
+          <div class="panel info-panel"><div class="panel-heading"><div><p class="eyebrow">DEFAULT ALLOCATION MODEL</p><h2>Net revenue split</h2></div></div>
+            <div id="allocation-list" class="allocation-grid"></div>
+            <p class="muted note">Illustrative starting weights from the manuscript; this is bookkeeping, not a payment processor or tax report.</p>
+          </div>
+        </section>
+
+        <section class="view" id="view-assets" aria-labelledby="assets-title">
+          <div class="page-heading"><div><p class="eyebrow">CREATOR GOVERNANCE / ATTRIBUTION</p><h1 id="assets-title" tabindex="-1">Assets &amp; releases</h1>
+            <p class="subheading">Carry creator credits, license notes, and release status with the project.</p></div></div>
+          <div class="content-grid">
+            <form class="panel form-panel" data-resource="assets">
+              <div class="panel-heading"><div><p class="eyebrow">ASSET REGISTER</p><h2>Register an asset</h2></div></div>
+              <label>Project<select name="project_id" data-projects required></select></label>
+              <label>Asset name<input name="name" required></label>
+              <label>Creator<input name="creator" required></label>
+              <label>Track<input name="track" required placeholder="Environment art"></label>
+              <label>License / source<input name="license" required placeholder="CC BY 4.0, purchased…"></label>
+              <label>Credited<select name="credited"><option value="true">Yes</option><option value="false">No</option></select></label>
+              <button class="button button-primary" type="submit">Register asset</button>
+            </form>
+            <div class="panel table-panel"><div class="panel-heading"><div><p class="eyebrow">ASSET REGISTER</p><h2>Contributor credits</h2></div></div>
+              <div id="assets-list" class="table-wrap"></div></div>
+          </div>
+          <div class="content-grid">
+            <form class="panel form-panel" data-resource="releases">
+              <div class="panel-heading"><div><p class="eyebrow">DELIVERY RECORD</p><h2>Track a release</h2></div></div>
+              <label>Project<select name="project_id" data-projects required></select></label>
+              <label>Version<input name="version" required placeholder="0.1.0"></label>
+              <label>Target<select name="target"><option>PC VR</option><option>Quest / Android</option><option>Cross-platform</option></select></label>
+              <label>Status<select name="status"><option>planned</option><option>building</option><option>ready</option><option>published</option><option>blocked</option></select></label>
+              <label class="wide">Notes<textarea name="notes" rows="2"></textarea></label>
+              <button class="button button-primary" type="submit">Save release</button>
+            </form>
+            <div class="panel table-panel"><div class="panel-heading"><div><p class="eyebrow">DELIVERY RECORD</p><h2>Release history</h2></div></div>
+              <div id="releases-list" class="table-wrap"></div></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-world-tools" aria-labelledby="world-tools-title">
+          <div class="page-heading"><div><p class="eyebrow">WORLD SYSTEMS / PRACTICAL TOOLS</p><h1 id="world-tools-title" tabindex="-1">World tools</h1>
+            <p class="subheading">Use the local CLI for project-root checks and compute break-even estimates.</p></div></div>
+          <div class="content-grid">
+            <div class="panel tool-card">
+              <p class="eyebrow">UNITY PROJECT ROOT</p><h2>Check root hygiene</h2>
+              <p>Confirm the selected directory contains <code>Assets/</code>, <code>Packages/manifest.json</code>, and <code>ProjectSettings/ProjectVersion.txt</code>.</p>
+              <pre>python -m ledger_suite audit-unity /path/to/UnityProject</pre>
+              <p class="muted">Read-only check. It does not repair or modify project files.</p>
+            </div>
+            <div class="panel tool-card">
+              <p class="eyebrow">CLOUD COMPUTE</p><h2>Compare monthly run rates</h2>
+              <p>Include persistent storage when comparing hourly GPU use against a flat-rate workstation.</p>
+              <pre>python -m ledger_suite estimate-cloud 15 \
+  --hourly-rate 0.50 --storage 14 --flat-rate 60</pre>
+              <p class="muted">Uses 52/12 weeks per month; actual provider prices and usage limits vary.</p>
+            </div>
+          </div>
+          <div class="content-grid">
+            <form class="panel form-panel" data-resource="audio_zones">
+              <div class="panel-heading"><div><p class="eyebrow">SPATIAL AUDIO</p><h2>Add an audio zone</h2></div></div>
+              <label>Project<select name="project_id" data-projects required></select></label>
+              <label>Zone name<input name="name" required placeholder="Intimate seating"></label>
+              <label>Near distance <span class="unit">m</span><input name="near_distance" type="number" min="0.1" step="0.1" required></label>
+              <label>Far distance <span class="unit">m</span><input name="far_distance" type="number" min="0.2" step="0.1" required></label>
+              <label class="wide">Attenuation notes<textarea name="strategy" rows="2"></textarea></label>
+              <button class="button button-primary" type="submit">Save audio zone</button>
+            </form>
+            <div class="panel table-panel"><div class="panel-heading"><div><p class="eyebrow">SPATIAL AUDIO</p><h2>Venue zones</h2></div></div>
+              <div id="audio_zones-list" class="table-wrap"></div></div>
+          </div>
+          <div class="panel caution-panel">
+            <strong>Platform boundaries</strong>
+            <p>This suite does not connect to VRChat, Discord, Patreon, cloud GPU providers, or payment systems. The roster, group checks, moderation decisions, and release records are operator-maintained notes. Client-side Udon logic cannot enforce platform-wide trust ranks or replace VRChat’s own safety and group controls.</p>
+          </div>
+        </section>
+        <div id="toast" class="toast" role="status" aria-live="polite"></div>
+      </main>
+    </div>
+    <script src="/app.js" defer></script>
+  </body>
+</html>
